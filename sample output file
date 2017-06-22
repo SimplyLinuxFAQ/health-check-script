@@ -1,0 +1,142 @@
+[root@ansible-host tmp]# ./health-check.sh 
+
+************************************ Health Status Report ************************************
+
+Operating System Details
+-------------------------------------
+Hostname				               : ansible-host.example.com
+Operating System			         : Red Hat Enterprise Linux Server release 6.8 (Santiago)
+Kernel Version				         : 2.6.32-696.3.2.el6.x86_64
+OS Architecture				         : 64 Bit OS
+System Uptime 				         : up by 8:58 hours
+Current System Date & Time 		 : Thu 22 Jun 2017 08:06:22 AM EDT
+
+Checking For Read-only File System[s]
+-------------------------------------
+/dev/mapper/datavg-datalv on /data type ext4 (ro)
+
+.....Read Only file system[s] found
+
+
+Checking For Currently Mounted File System[s]
+--------------------------------------------------------------------------
+/dev/mapper/cryptdevice    on  /forcryptdevice  type  ext4  (rw,noatime)
+/dev/mapper/datavg-datalv  on  /data            type  ext4  (ro)
+/dev/mapper/extra-extralv  on  /var/log         type  ext4  (rw)
+/dev/mapper/vg1-homelv     on  /home            type  ext4  (rw)
+/dev/mapper/vg1-rootlv     on  /                type  ext4  (rw)
+/dev/mapper/vg1-tmplv      on  /tmp             type  ext4  (rw)
+/dev/mapper/vg1-varlv      on  /var             type  ext4  (rw)
+/dev/sda1                  on  /boot            type  ext4  (rw)
+
+
+Checking For Disk Usage On Mounted File System[s]
+--------------------------------------------------------------------------
+( 0-90% = OK/HEALTHY, 90-95% = WARNING, 95-100% = CRITICAL )
+--------------------------------------------------------------------------
+Mounted File System[s] Utilization (Percentage Used):
+
+/dev/mapper/cryptdevice    /forcryptdevice  1%   ------------------Good/Healthy
+/dev/mapper/vg1-homelv     /home            1%   ------------------Good/Healthy
+/dev/mapper/extra-extralv  /var/log         3%   ------------------Good/Healthy
+/dev/mapper/vg1-tmplv      /tmp             7%   ------------------Good/Healthy
+/dev/mapper/datavg-datalv  /data            8%   ------------------Good/Healthy
+/dev/mapper/vg1-varlv      /var             12%  ------------------Good/Healthy
+/dev/sda1                  /boot            17%  ------------------Good/Healthy
+/dev/mapper/vg1-rootlv     /                91%  ------------------Warning
+
+
+Checking For Zombie Processes
+-------------------------------------
+No zombie processes found on the system.
+
+
+Checking For INode Usage
+--------------------------------------------------------------------------
+( 0-90% = OK/HEALTHY, 90-95% = WARNING, 95-100% = CRITICAL )
+--------------------------------------------------------------------------
+INode Utilization (Percentage Used):
+
+/dev/mapper/cryptdevice    /forcryptdevice  1%   ------------------Good/Healthy
+/dev/mapper/datavg-datalv  /data            1%   ------------------Good/Healthy
+/dev/mapper/extra-extralv  /var/log         1%   ------------------Good/Healthy
+/dev/mapper/vg1-homelv     /home            1%   ------------------Good/Healthy
+/dev/sda1                  /boot            1%   ------------------Good/Healthy
+/dev/mapper/vg1-varlv      /var             6%   ------------------Good/Healthy
+/dev/mapper/vg1-tmplv      /tmp             9%   ------------------Good/Healthy
+/dev/mapper/vg1-rootlv     /                29%  ------------------Good/Healthy
+
+
+Checking Memory Usage Details
+-------------------------------------
+Total RAM (/proc/meminfo) : 1862.58 MB OR 1.81893 GB
+Used RAM in MB : 1254, in GB : 1.22461
+Free RAM in MB : 608.91 , in GB : 0.594639
+
+
+Checking SWAP Details
+-------------------------------------
+Total Swap Memory in MB : 2000, in GB : 1.95312
+Swap Free Memory in MB : 2000, in GB : 1.95312
+
+
+Checking For Processor Utilization
+-------------------------------------
+Manufacturer: GenuineIntel
+Processor Model: Intel(R) Core(TM) i5-5200U CPU @ 2.20GHz
+No. Of Processor(s) : 1
+No. of Core(s) per processor : 1
+
+Current Processor Utilization Summary :
+
+08:06:22 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+08:06:22 AM  all    0.39    0.00    0.36    0.43    0.00    0.06    0.00    0.00   98.75
+
+
+Checking For Load Average
+-------------------------------------
+Current Load Average : 0.00, 0.03, 0.00
+
+
+Most Recent 3 Reboot Events
+--------------------------------------------------------------------------
+reboot   system boot  2.6.32-696.3.2.e Wed Jun 21 02:27 - 08:06 (1+05:39)   
+reboot   system boot  2.6.32-696.3.2.e Tue Jun 20 02:06 - 08:06 (2+05:59)   
+reboot   system boot  2.6.32-696.3.2.e Tue Jun 20 01:50 - 02:05  (00:15)    
+
+
+Most Recent 3 Shutdown Events
+--------------------------------------------------------------------------
+shutdown system down  2.6.32-696.3.2.e Tue Jun 20 02:06 - 02:06  (00:00)    
+shutdown system down  2.6.32-642.6.2.e Tue Jun 20 01:50 - 01:50  (00:00)    
+
+
+Top 5 Memory Resource Hog Processes
+--------------------------------------------------------------------------
+%MEM %CPU    PID   PPID USER     STAT COMMAND
+
+ 2.0  0.2   4643   4642 root     S<s+ /usr/bin/X :0 -auth /root/.serverauth.4626
+
+ 1.5  0.1   4794      1 root     S    /usr/lib/vmware-tools/sbin64/vmtoolsd -n vmusr --blockFd 3
+
+ 1.4  0.0   1966      1 root     SLsl /sbin/dmeventd
+
+ 1.1  2.2  29207   5115 root     S    gedit health-check.sh
+
+ 1.1  0.0   4783   4717 root     S    nautilus
+
+
+
+Top 5 CPU Resource Hog Processes
+--------------------------------------------------------------------------
+%CPU %MEM    PID   PPID USER     STAT COMMAND
+
+ 2.2  1.1  29207   5115 root     S    gedit health-check.sh
+
+ 1.0  0.0  32048   5115 root     S+   /bin/bash ./health-check.sh
+
+ 0.2  2.0   4643   4642 root     S<s+ /usr/bin/X :0 -auth /root/.serverauth.4626
+
+ 0.1  1.5   4794      1 root     S    /usr/lib/vmware-tools/sbin64/vmtoolsd -n vmusr --blockFd 3
+
+ 0.1  0.2   2245      1 root     Sl   /usr/sbin/vmtoolsd
