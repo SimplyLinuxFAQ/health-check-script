@@ -1,7 +1,7 @@
 #!/bin/bash
 ##---------- Author : Sadashiva Murthy M ----------------------------------------------------##
 ##---------- Blog site : http://simplylinuxfaq.blogspot.in ----------------------------------##
-##---------- Github page : https://github.com/SimplyLinuxFAQ/health-check-script ------------##
+##---------- Github page : https://github.com/SimplyLinuxFAQ/scripts/health-check -----------##
 ##---------- Purpose : To quickly check and report health status in a linux systems.---------##
 ##---------- Tested on : RHEL7/6/5/, SLES12/11, Ubuntu14, Mint16, Boss6(Debian) variants.----##
 ##---------- Updated version : v1.0 (Updated on 22th-June-2017) -----------------------------##
@@ -25,32 +25,32 @@ fi
 
 echo -e "$S Health Status Report $S"
 
-#------Print hostname, OS architecture and kernel version-----#
+
 echo -e "\nOperating System Details" 
 echo -e "$D"
-printf "Hostname\t\t\t\t :" $(hostname -f > /dev/null 2>&1) && printf " $(hostname -f)" || printf " $(hostname -s)"
+printf "Hostname :" $(hostname -f > /dev/null 2>&1) && printf " $(hostname -f)" || printf " $(hostname -s)"
 
 if [ -e /usr/bin/lsb_release ]
 then
-	echo -e "\nOperating System\t\t\t :" $(lsb_release -d|awk -F: '{print $2}'|sed -e 's/^[ \t]*//') 
+	echo -e "\nOperating System :" $(lsb_release -d|awk -F: '{print $2}'|sed -e 's/^[ \t]*//') 
 else
-	echo -e "\nOperating System\t\t\t :" $(cat /etc/system-release) 
+	echo -e "\nOperating System :" $(cat /etc/system-release) 
 fi
 
-echo -e "Kernel Version\t\t\t\t :" $(uname -r) 
+echo -e "Kernel Version :" $(uname -r) 
 
-printf "OS Architecture\t\t\t\t :" $(arch | grep x86_64 2>&1 > /dev/null) && printf " 64 Bit OS\n"  || printf " 32 Bit OS\n"
+printf "OS Architecture :" $(arch | grep x86_64 2>&1 > /dev/null) && printf " 64 Bit OS\n"  || printf " 32 Bit OS\n"
 
 #--------Print system uptime-------#
 UPTIME=$(uptime)
 echo $UPTIME|grep day 2>&1 > /dev/null
 if [ $? != 0 ]
 then
-  echo $UPTIME|grep -w min 2>&1 > /dev/null && echo -e "System Uptime \t\t\t\t : "$(echo $UPTIME|awk '{print $2" by "$3}'|sed -e 's/,.*//g')" minutes"  || echo -e "System Uptime \t\t\t\t : "$(echo $UPTIME|awk '{print $2" by "$3" "$4}'|sed -e 's/,.*//g')" hours" 
+  echo $UPTIME|grep -w min 2>&1 > /dev/null && echo -e "System Uptime : "$(echo $UPTIME|awk '{print $2" by "$3}'|sed -e 's/,.*//g')" minutes"  || echo -e "System Uptime : "$(echo $UPTIME|awk '{print $2" by "$3" "$4}'|sed -e 's/,.*//g')" hours" 
 else
-  echo -e "System Uptime \t\t\t\t :" $(echo $UPTIME|awk '{print $2" by "$3" "$4" "$5" hours"}'|sed -e 's/,//g') 
+  echo -e "System Uptime :" $(echo $UPTIME|awk '{print $2" by "$3" "$4" "$5" hours"}'|sed -e 's/,//g') 
 fi
-echo -e "Current System Date & Time \t\t : "$(date +%c)
+echo -e "Current System Date & Time : "$(date +%c)
 
 
 #--------Check for any read-only file systems--------#
