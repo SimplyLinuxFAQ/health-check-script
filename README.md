@@ -9,3 +9,5 @@ This script has been tested to run successfully on RHEL7/6/5.x, Cent OS, SLES 12
 This is a small, light weight script which makes use of native Linux utilities to get the required details and doesn't need much space."
 
 For more details check this link: http://simplylinuxfaq.blogspot.in/2015/05/How-To-Check-Health-Status-Of-Linux-System.html
+
+                                                                                                      Updated on : 25-Jun-2017
