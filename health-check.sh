@@ -1,7 +1,7 @@
 #!/bin/bash
 ##---------- Author : Sadashiva Murthy M ----------------------------------------------------##
 ##---------- Blog site : http://simplylinuxfaq.blogspot.in ----------------------------------##
-##---------- Github page : https://github.com/SimplyLinuxFAQ/scripts/health-check -----------##
+##---------- Github page : https://github.com/SimplyLinuxFAQ/health-check-script ------------##
 ##---------- Purpose : To quickly check and report health status in a linux systems.---------##
 ##---------- Tested on : RHEL7/6/5/, SLES12/11, Ubuntu14, Mint16, Boss6(Debian) variants.----##
 ##---------- Updated version : v1.0 (Updated on 25th-June-2017) -----------------------------##
