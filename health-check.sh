@@ -4,7 +4,7 @@
 ##---------- Github page : https://github.com/SimplyLinuxFAQ/scripts/health-check -----------##
 ##---------- Purpose : To quickly check and report health status in a linux systems.---------##
 ##---------- Tested on : RHEL7/6/5/, SLES12/11, Ubuntu14, Mint16, Boss6(Debian) variants.----##
-##---------- Updated version : v1.0 (Updated on 22th-June-2017) -----------------------------##
+##---------- Updated version : v1.0 (Updated on 25th-June-2017) -----------------------------##
 ##-----NOTE: This script requires root privileges, otherwise you could run the script -------##
 ##---- as a sudo user who got root privileges. ----------------------------------------------##
 ##----------- "sudo /bin/bash <ScriptName>" -------------------------------------------------##
@@ -13,8 +13,8 @@ S="************************************"
 D="-------------------------------------"
 
 MOUNT=$(mount|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|sort -u -t' ' -k1,2)
-FS_USAGE=$(df -PTh|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|sort -k6n)
-IUSAGE=$(df -PThi|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|sort -k6n)
+FS_USAGE=$(df -PTh|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|sort -k6n|awk '!seen[$1]++')
+IUSAGE=$(df -PThi|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|sort -k6n|awk '!seen[$1]++')
 
 #--------Checking the availability of sysstat package..........#
 if [ ! -x /usr/bin/mpstat ]
@@ -24,21 +24,12 @@ then
 fi
 
 echo -e "$S Health Status Report $S"
-
-
 echo -e "\nOperating System Details" 
 echo -e "$D"
 printf "Hostname :" $(hostname -f > /dev/null 2>&1) && printf " $(hostname -f)" || printf " $(hostname -s)"
 
-if [ -e /usr/bin/lsb_release ]
-then
-	echo -e "\nOperating System :" $(lsb_release -d|awk -F: '{print $2}'|sed -e 's/^[ \t]*//') 
-else
-	echo -e "\nOperating System :" $(cat /etc/system-release) 
-fi
-
+[ -x /usr/bin/lsb_release ] &&  echo -e "\nOperating System :" $(lsb_release -d|awk -F: '{print $2}'|sed -e 's/^[ \t]*//')  || echo -e "\nOperating System :" $(cat /etc/system-release)
 echo -e "Kernel Version :" $(uname -r) 
-
 printf "OS Architecture :" $(arch | grep x86_64 2>&1 > /dev/null) && printf " 64 Bit OS\n"  || printf " 32 Bit OS\n"
 
 #--------Print system uptime-------#
