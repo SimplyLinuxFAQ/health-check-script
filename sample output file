@@ -1,34 +1,22 @@
-[root@ansible-host tmp]# ./health-check.sh 
-
 ************************************ Health Status Report ************************************
 
 Operating System Details
 -------------------------------------
-Hostname : ansible-host.example.com
-Operating System : Red Hat Enterprise Linux Server release 6.8 (Santiago)
-Kernel Version : 2.6.32-696.3.2.el6.x86_64
+Hostname : ubuntu14.example.com
+Operating System : Ubuntu 14.04.5 LTS
+Kernel Version : 3.16.0-77-generic
 OS Architecture : 64 Bit OS
-System Uptime : up by 9:37 hours
-Current System Date & Time : Thu 22 Jun 2017 08:44:53 AM EDT
-
+System Uptime : up by 16 minutes
+Current System Date & Time : Sun 25 Jun 2017 04:09:18 AM PDT
 
 Checking For Read-only File System[s]
 -------------------------------------
-/dev/mapper/datavg-datalv on /data type ext4 (ro)
-
-.....Read Only file system[s] found
+.....No read-only file system[s] found. 
 
 
 Checking For Currently Mounted File System[s]
 --------------------------------------------------------------------------
-/dev/mapper/cryptdevice    on  /forcryptdevice  type  ext4  (rw,noatime)
-/dev/mapper/datavg-datalv  on  /data            type  ext4  (ro)
-/dev/mapper/extra-extralv  on  /var/log         type  ext4  (rw)
-/dev/mapper/vg1-homelv     on  /home            type  ext4  (rw)
-/dev/mapper/vg1-rootlv     on  /                type  ext4  (rw)
-/dev/mapper/vg1-tmplv      on  /tmp             type  ext4  (rw)
-/dev/mapper/vg1-varlv      on  /var             type  ext4  (rw)
-/dev/sda1                  on  /boot            type  ext4  (rw)
+/dev/sda1  on  /  type  ext4  (rw,errors=remount-ro)
 
 
 Checking For Disk Usage On Mounted File System[s]
@@ -37,14 +25,7 @@ Checking For Disk Usage On Mounted File System[s]
 --------------------------------------------------------------------------
 Mounted File System[s] Utilization (Percentage Used):
 
-/dev/mapper/cryptdevice    /forcryptdevice  1%   ------------------Good/Healthy
-/dev/mapper/vg1-homelv     /home            1%   ------------------Good/Healthy
-/dev/mapper/extra-extralv  /var/log         3%   ------------------Good/Healthy
-/dev/mapper/vg1-tmplv      /tmp             7%   ------------------Good/Healthy
-/dev/mapper/datavg-datalv  /data            8%   ------------------Good/Healthy
-/dev/mapper/vg1-varlv      /var             12%  ------------------Good/Healthy
-/dev/sda1                  /boot            17%  ------------------Good/Healthy
-/dev/mapper/vg1-rootlv     /                91%  ------------------Warning
+/dev/sda1  /  31%  ------------------Good/Healthy
 
 
 Checking For Zombie Processes
@@ -58,27 +39,20 @@ Checking For INode Usage
 --------------------------------------------------------------------------
 INode Utilization (Percentage Used):
 
-/dev/mapper/cryptdevice    /forcryptdevice  1%   ------------------Good/Healthy
-/dev/mapper/datavg-datalv  /data            1%   ------------------Good/Healthy
-/dev/mapper/extra-extralv  /var/log         1%   ------------------Good/Healthy
-/dev/mapper/vg1-homelv     /home            1%   ------------------Good/Healthy
-/dev/sda1                  /boot            1%   ------------------Good/Healthy
-/dev/mapper/vg1-varlv      /var             6%   ------------------Good/Healthy
-/dev/mapper/vg1-tmplv      /tmp             9%   ------------------Good/Healthy
-/dev/mapper/vg1-rootlv     /                29%  ------------------Good/Healthy
+/dev/sda1  /  22%  ------------------Good/Healthy
 
 
 Checking Memory Usage Details
 -------------------------------------
-Total RAM (/proc/meminfo) : 1862.58 MB OR 1.81893 GB
-Used RAM in MB : 1254, in GB : 1.22461
-Free RAM in MB : 608.91 , in GB : 0.594639
+Total RAM (/proc/meminfo) : 1988.17 MB OR 1.94157 GB
+Used RAM in MB : 1327, in GB : 1.2959
+Free RAM in MB : 661.227 , in GB : 0.645729
 
 
 Checking SWAP Details
 -------------------------------------
-Total Swap Memory in MB : 2000, in GB : 1.95312
-Swap Free Memory in MB : 2000, in GB : 1.95312
+Total Swap Memory in MB : 2045, in GB : 1.99707
+Swap Free Memory in MB : 2045, in GB : 1.99707
 
 
 Checking For Processor Utilization
@@ -90,41 +64,41 @@ No. of Core(s) per processor : 1
 
 Current Processor Utilization Summary :
 
-08:06:22 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
-08:06:22 AM  all    0.39    0.00    0.36    0.43    0.00    0.06    0.00    0.00   98.75
+04:09:18 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+04:09:18 AM  all    6.53    1.09    4.69    9.27    0.00    0.19    0.00    0.00    0.00   78.23
 
 
 Checking For Load Average
 -------------------------------------
-Current Load Average : 0.00, 0.03, 0.00
+Current Load Average : 0.14, 0.21, 0.29
 
 
 Most Recent 3 Reboot Events
 --------------------------------------------------------------------------
-reboot   system boot  2.6.32-696.3.2.e Wed Jun 21 02:27 - 08:06 (1+05:39)   
-reboot   system boot  2.6.32-696.3.2.e Tue Jun 20 02:06 - 08:06 (2+05:59)   
-reboot   system boot  2.6.32-696.3.2.e Tue Jun 20 01:50 - 02:05  (00:15)    
+reboot   system boot  3.16.0-77-generi Sat Dec  3 21:50 - 04:09 (203+05:18) 
+reboot   system boot  3.16.0-77-generi Sat Dec  3 19:08 - 21:48  (02:40)    
+reboot   system boot  3.16.0-77-generi Fri Dec  2 10:35 - 21:48 (1+11:12)   
 
 
 Most Recent 3 Shutdown Events
 --------------------------------------------------------------------------
-shutdown system down  2.6.32-696.3.2.e Tue Jun 20 02:06 - 02:06  (00:00)    
-shutdown system down  2.6.32-642.6.2.e Tue Jun 20 01:50 - 01:50  (00:00)    
+shutdown system down  3.16.0-77-generi Sat Dec  3 21:49 - 21:50  (00:01)    
+shutdown system down  3.16.0-77-generi Fri Dec  2 10:35 - 10:35  (00:00)    
 
 
 Top 5 Memory Resource Hog Processes
 --------------------------------------------------------------------------
 %MEM %CPU    PID   PPID USER     STAT COMMAND
 
- 2.0  0.2   4643   4642 root     S<s+ /usr/bin/X :0 -auth /root/.serverauth.4626
+ 7.2  0.0   2765      1 foreman  Sl   Passenger RackApp: /usr/share/foreman                              
 
- 1.5  0.1   4794      1 root     S    /usr/lib/vmware-tools/sbin64/vmtoolsd -n vmusr --blockFd 3
+ 6.1  1.0   3832   3054 ubuntu   SNl  /usr/bin/python3 /usr/bin/update-manager --no-update --no-focus-on-map
 
- 1.4  0.0   1966      1 root     SLsl /sbin/dmeventd
+ 4.7  1.2   3497   3245 ubuntu   Sl   compiz
 
- 1.1  2.2  29207   5115 root     S    gedit health-check.sh
+ 2.7  0.6   1928   1913 root     Ss+  /usr/bin/X -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
 
- 1.1  0.0   4783   4717 root     S    nautilus
+ 2.6  0.0   2011      1 foreman+ Sl   ruby /usr/share/foreman-proxy/bin/smart-proxy
 
 
 
@@ -132,12 +106,12 @@ Top 5 CPU Resource Hog Processes
 --------------------------------------------------------------------------
 %CPU %MEM    PID   PPID USER     STAT COMMAND
 
- 2.2  1.1  29207   5115 root     S    gedit health-check.sh
+ 1.7  1.3   4189   3054 ubuntu   Sl   gnome-terminal
 
- 1.0  0.0  32048   5115 root     S+   /bin/bash ./health-check.sh
+ 1.2  4.7   3497   3245 ubuntu   Sl   compiz
 
- 0.2  2.0   4643   4642 root     S<s+ /usr/bin/X :0 -auth /root/.serverauth.4626
+ 1.0  6.1   3832   3054 ubuntu   SNl  /usr/bin/python3 /usr/bin/update-manager --no-update --no-focus-on-map
 
- 0.1  1.5   4794      1 root     S    /usr/lib/vmware-tools/sbin64/vmtoolsd -n vmusr --blockFd 3
+ 0.8  0.2      1      0 root     Ss   /sbin/init
 
- 0.1  0.2   2245      1 root     Sl   /usr/sbin/vmtoolsd
+ 0.6  2.7   1928   1913 root     Ss+  /usr/bin/X -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
