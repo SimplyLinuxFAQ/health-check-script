@@ -37,6 +37,31 @@ echo -e "$S"
 echo -e "\tSystem Health Status"
 echo -e "$S"
 
+#--------Print Operating System Details--------#
+echo -e "\nPrint Operating System Details"
+echo -e "$D"
+
+hostname -f &> /dev/null && printf "Hostname : $(hostname -f)" || printf "Hostname : $(hostname -s)"
+
+[ -x /usr/bin/lsb_release ] &&  echo -e "\nOperating System :" $(lsb_release -d|awk -F: '{print $2}'|sed -e 's/^[ \t]*//')  || \
+echo -e "\nOperating System :" $(cat /etc/system-release)
+
+echo -e "Kernel Version : " $(uname -r)
+
+printf "OS Architecture : "$(arch | grep x86_64 &> /dev/null) && printf " 64 Bit OS\n"  || printf " 32 Bit OS\n"
+
+#--------Print system uptime-------#
+UPTIME=$(uptime)
+echo $UPTIME|grep day &> /dev/null
+if [ $? != 0 ]
+then
+  echo $UPTIME|grep -w min &> /dev/null && echo -e "System Uptime : "$(echo $UPTIME|awk '{print $2" by "$3}'|sed -e 's/,.*//g')" minutes" \
+ || echo -e "System Uptime : "$(echo $UPTIME|awk '{print $2" by "$3" "$4}'|sed -e 's/,.*//g')" hours"
+else
+  echo -e "System Uptime : " $(echo $UPTIME|awk '{print $2" by "$3" "$4" "$5" hours"}'|sed -e 's/,//g')
+fi
+echo -e "Current System Date & Time : "$(date +%c)
+
 #--------Check for any read-only file systems--------#
 echo -e "\nChecking For Read-only File System[s]"
 echo -e "$D"
