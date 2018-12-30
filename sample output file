@@ -2,6 +2,15 @@
         System Health Status
 ************************************
 
+Print Operating System Details
+-------------------------------------
+Hostname : rhel8.example.com
+Operating System : Red Hat Enterprise Linux release 8.0 Beta (Ootpa)
+Kernel Version :  4.18.0-32.el8.x86_64
+OS Architecture :  64 Bit OS
+System Uptime : up by 11:31 hours
+Current System Date & Time : Sun 30 Dec 2018 01:45:20 PM EST
+
 Checking For Read-only File System[s]
 -------------------------------------
 .....No read-only file system[s] found.
