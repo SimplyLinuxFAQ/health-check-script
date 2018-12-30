@@ -10,4 +10,4 @@ This is a small, light weight script which makes use of native Linux utilities t
 
 For more details check this link: https://www.simplylinuxfaq.com/2015/05/How-To-Check-Health-Status-Of-Linux-System.html
 
-                                                                    Updated on : 25-Jun-2017
+                                                                    Updated on : 30-Dec-2018
