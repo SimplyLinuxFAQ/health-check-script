@@ -1,22 +1,16 @@
-************************************ Health Status Report ************************************
-
-Operating System Details
--------------------------------------
-Hostname : ubuntu14.example.com
-Operating System : Ubuntu 14.04.5 LTS
-Kernel Version : 3.16.0-77-generic
-OS Architecture : 64 Bit OS
-System Uptime : up by 16 minutes
-Current System Date & Time : Sun 25 Jun 2017 04:09:18 AM PDT
+************************************
+        System Health Status
+************************************
 
 Checking For Read-only File System[s]
 -------------------------------------
-.....No read-only file system[s] found. 
+.....No read-only file system[s] found.
 
 
 Checking For Currently Mounted File System[s]
 --------------------------------------------------------------------------
-/dev/sda1  on  /  type  ext4  (rw,errors=remount-ro)
+/dev/mapper/rhel-root  on  /      type  xfs  (rw,relatime,seclabel,attr2,inode64,noquota)
+/dev/sda1              on  /boot  type  xfs  (rw,relatime,seclabel,attr2,inode64,noquota)
 
 
 Checking For Disk Usage On Mounted File System[s]
@@ -25,7 +19,8 @@ Checking For Disk Usage On Mounted File System[s]
 --------------------------------------------------------------------------
 Mounted File System[s] Utilization (Percentage Used):
 
-/dev/sda1  /  31%  ------------------Good/Healthy
+/dev/sda1              /boot  17%    ------  OK/HEALTHY
+/dev/mapper/rhel-root  /      41%    ------  OK/HEALTHY
 
 
 Checking For Zombie Processes
@@ -39,79 +34,78 @@ Checking For INode Usage
 --------------------------------------------------------------------------
 INode Utilization (Percentage Used):
 
-/dev/sda1  /  22%  ------------------Good/Healthy
-
-
-Checking Memory Usage Details
--------------------------------------
-Total RAM (/proc/meminfo) : 1988.17 MB OR 1.94157 GB
-Used RAM in MB : 1327, in GB : 1.2959
-Free RAM in MB : 661.227 , in GB : 0.645729
+/dev/sda1              /boot  1%    ------  OK/HEALTHY
+/dev/mapper/rhel-root  /      2%    ------  OK/HEALTHY
 
 
 Checking SWAP Details
 -------------------------------------
-Total Swap Memory in MB : 2045, in GB : 1.99707
-Swap Free Memory in MB : 2045, in GB : 1.99707
+Total Swap Memory in MiB : 2048, in GiB : 2
+Swap Free Memory in MiB : 2048, in GiB : 2
 
 
 Checking For Processor Utilization
 -------------------------------------
-Manufacturer: GenuineIntel
-Processor Model: Intel(R) Core(TM) i5-5200U CPU @ 2.20GHz
-No. Of Processor(s) : 1
-No. of Core(s) per processor : 1
 
 Current Processor Utilization Summary :
 
-04:09:18 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
-04:09:18 AM  all    6.53    1.09    4.69    9.27    0.00    0.19    0.00    0.00    0.00   78.23
+12:53:37 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+12:53:37 PM  all    2.53    0.25    0.96    0.20    0.36    0.06    0.00    0.00    0.00   95.64
 
 
 Checking For Load Average
 -------------------------------------
-Current Load Average : 0.14, 0.21, 0.29
+Current Load Average : 0.00, 0.01, 0.00
 
 
 Most Recent 3 Reboot Events
 --------------------------------------------------------------------------
-reboot   system boot  3.16.0-77-generi Sat Dec  3 21:50 - 04:09 (203+05:18) 
-reboot   system boot  3.16.0-77-generi Sat Dec  3 19:08 - 21:48  (02:40)    
-reboot   system boot  3.16.0-77-generi Fri Dec  2 10:35 - 21:48 (1+11:12)   
+reboot   system boot  4.18.0-32.el8.x8 Sun Dec 30 02:13   still running
+reboot   system boot  4.18.0-32.el8.x8 Fri Dec 28 06:50   still running
+reboot   system boot  4.18.0-32.el8.x8 Fri Dec 21 05:57   still running
 
 
 Most Recent 3 Shutdown Events
 --------------------------------------------------------------------------
-shutdown system down  3.16.0-77-generi Sat Dec  3 21:49 - 21:50  (00:01)    
-shutdown system down  3.16.0-77-generi Fri Dec  2 10:35 - 10:35  (00:00)    
+shutdown system down  4.18.0-32.el8.x8 Wed Nov 21 20:14 - 20:15  (00:00)
+shutdown system down  4.18.0-32.el8.x8 Mon Nov 19 02:06 - 02:07  (00:00)
+shutdown system down  4.18.0-32.el8.x8 Mon Nov 19 01:32 - 01:33  (00:01)
 
 
 Top 5 Memory Resource Hog Processes
 --------------------------------------------------------------------------
-%MEM %CPU    PID   PPID USER     STAT COMMAND
+%MEM %CPU   PID  PPID USER     STAT COMMAND
 
- 7.2  0.0   2765      1 foreman  Sl   Passenger RackApp: /usr/share/foreman                              
+ 3.2  0.0  3942  3641 root     Sl+  /usr/bin/gnome-software --gapplication-service
 
- 6.1  1.0   3832   3054 ubuntu   SNl  /usr/bin/python3 /usr/bin/update-manager --no-update --no-focus-on-map
+ 2.9  0.1  3419     1 root     Ssl  /usr/libexec/packagekitd
 
- 4.7  1.2   3497   3245 ubuntu   Sl   compiz
+ 2.4  0.0  3964  3641 root     Sl+  /usr/libexec/evolution/evolution-alarm-notify
 
- 2.7  0.6   1928   1913 root     Ss+  /usr/bin/X -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+ 2.0  0.0  4226  4183 root     Sl   /usr/libexec/evolution-addressbook-factory-subprocess --factory all --bus-name org.gnome.evolution.dataserver.Subprocess.Backend.AddressBookx4183x2 --own-path /org/gnome/evolution/dataserver/Subprocess/Backend/AddressBook/4183/2
 
- 2.6  0.0   2011      1 foreman+ Sl   ruby /usr/share/foreman-proxy/bin/smart-proxy
+ 1.9  0.0  5026     1 root     S    /usr/libexec/platform-python /usr/libexec/rhsmd
 
 
 
 Top 5 CPU Resource Hog Processes
 --------------------------------------------------------------------------
-%CPU %MEM    PID   PPID USER     STAT COMMAND
+%CPU %MEM   PID  PPID USER     STAT COMMAND
 
- 1.7  1.3   4189   3054 ubuntu   Sl   gnome-terminal
+ 4.5  0.1 24628  3757 root     S+   /bin/bash ./health-check.sh
 
- 1.2  4.7   3497   3245 ubuntu   Sl   compiz
+ 0.5  1.2  3824     1 root     Ss   /usr/libexec/sssd/sssd_kcm --uid 0 --gid 0 --logger=files
 
- 1.0  6.1   3832   3054 ubuntu   SNl  /usr/bin/python3 /usr/bin/update-manager --no-update --no-focus-on-map
+ 0.4 15.9  3674  3641 root     Sl+  /usr/bin/gnome-shell
 
- 0.8  0.2      1      0 root     Ss   /sbin/init
+ 0.3 14.3  3364  3343 gdm      Sl+  /usr/bin/gnome-shell
 
- 0.6  2.7   1928   1913 root     Ss+  /usr/bin/X -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+ 0.1  2.9  3419     1 root     Ssl  /usr/libexec/packagekitd
+
+NOTE:- If any of the above fields are marked as "blank" or "NONE" or "UNKNOWN" or "Not Available" or "Not Specified"
+that means either there is no value present in the system for these fields, otherwise that value may not be available,
+or suppressed since there was an error in fetching details.
+
+                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                   <>--------<> Powered By : https://www.simplylinuxfaq.com <>--------<>
+                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
