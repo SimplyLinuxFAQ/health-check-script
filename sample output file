@@ -1,15 +1,12 @@
 ************************************
         System Health Status
 ************************************
-
-Print Operating System Details
--------------------------------------
-Hostname : rhel8.example.com
-Operating System : Red Hat Enterprise Linux release 8.0 Beta (Ootpa)
-Kernel Version :  4.18.0-32.el8.x86_64
-OS Architecture :  64 Bit OS
-System Uptime : up by 11:31 hours
-Current System Date & Time : Sun 30 Dec 2018 01:45:20 PM EST
+Hostname : suse15.example.com
+Operating System : SLES 15-SP1
+Kernel Version : 4.12.14-197.29-default
+OS Architecture : 64 Bit OS
+System Uptime : up by 6:42 hours
+Current System Date & Time : Mon Jul 27 05:04:33 2020
 
 Checking For Read-only File System[s]
 -------------------------------------
@@ -18,18 +15,18 @@ Checking For Read-only File System[s]
 
 Checking For Currently Mounted File System[s]
 --------------------------------------------------------------------------
-/dev/mapper/rhel-root  on  /      type  xfs  (rw,relatime,seclabel,attr2,inode64,noquota)
-/dev/sda1              on  /boot  type  xfs  (rw,relatime,seclabel,attr2,inode64,noquota)
+/dev/sda2  on  /      type  btrfs  (rw,relatime,space_cache,subvolid=267,subvol=/@/.snapshots/1/snapshot)
+/dev/sda3  on  /home  type  xfs    (rw,relatime,attr2,inode64,noquota)
 
 
 Checking For Disk Usage On Mounted File System[s]
 --------------------------------------------------------------------------
-( 0-90% = OK/HEALTHY, 90-95% = WARNING, 95-100% = CRITICAL )
+( 0-85% = OK/HEALTHY,  85-95% = WARNING,  95-100% = CRITICAL )
 --------------------------------------------------------------------------
 Mounted File System[s] Utilization (Percentage Used):
 
-/dev/sda1              /boot  17%    ------  OK/HEALTHY
-/dev/mapper/rhel-root  /      41%    ------  OK/HEALTHY
+/dev/sda3  /home  1%     ------  OK/HEALTHY
+/dev/sda2  /      26%    ------  OK/HEALTHY
 
 
 Checking For Zombie Processes
@@ -39,18 +36,18 @@ No zombie processes found on the system.
 
 Checking For INode Usage
 --------------------------------------------------------------------------
-( 0-90% = OK/HEALTHY, 90-95% = WARNING, 95-100% = CRITICAL )
+( 0-85% = OK/HEALTHY,  85-95% = WARNING,  95-100% = CRITICAL )
 --------------------------------------------------------------------------
 INode Utilization (Percentage Used):
 
-/dev/sda1              /boot  1%    ------  OK/HEALTHY
-/dev/mapper/rhel-root  /      2%    ------  OK/HEALTHY
+Filesystem  Mounted  IUse%  (Inode       Percentage  details     not      available)
+/dev/sda3   /home    1%       ------      OK/HEALTHY
 
 
 Checking SWAP Details
 -------------------------------------
-Total Swap Memory in MiB : 2048, in GiB : 2
-Swap Free Memory in MiB : 2048, in GiB : 2
+Total Swap Memory in MiB : 1274.79, in GiB : 1.24491
+Swap Free Memory in MiB : 1263.79, in GiB : 1.23417
 
 
 Checking For Processor Utilization
@@ -58,58 +55,57 @@ Checking For Processor Utilization
 
 Current Processor Utilization Summary :
 
-12:53:37 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
-12:53:37 PM  all    2.53    0.25    0.96    0.20    0.36    0.06    0.00    0.00    0.00   95.64
+05:04:34     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+05:04:34     all    1.18    0.00    0.57    0.12    0.00    0.02    0.00    0.00    0.00   98.11
 
 
 Checking For Load Average
 -------------------------------------
-Current Load Average : 0.00, 0.01, 0.00
+Current Load Average : 0.16, 0.10, 0.08
 
 
 Most Recent 3 Reboot Events
 --------------------------------------------------------------------------
-reboot   system boot  4.18.0-32.el8.x8 Sun Dec 30 02:13   still running
-reboot   system boot  4.18.0-32.el8.x8 Fri Dec 28 06:50   still running
-reboot   system boot  4.18.0-32.el8.x8 Fri Dec 21 05:57   still running
+reboot   system boot  4.12.14-197.29-d Sun Jul 26 22:23   still running
+reboot   system boot  4.12.14-197.29-d Sun Jul 26 22:20   still running
+reboot   system boot  4.12.14-197.29-d Sat Jul 25 17:41   still running
 
 
 Most Recent 3 Shutdown Events
 --------------------------------------------------------------------------
-shutdown system down  4.18.0-32.el8.x8 Wed Nov 21 20:14 - 20:15  (00:00)
-shutdown system down  4.18.0-32.el8.x8 Mon Nov 19 02:06 - 02:07  (00:00)
-shutdown system down  4.18.0-32.el8.x8 Mon Nov 19 01:32 - 01:33  (00:01)
+shutdown system down  4.12.14-197.29-d Mon Jul 13 19:33 - 03:28  (07:55)
+shutdown system down  4.12.14-197.29-d Sun Jul 12 22:48 - 23:00  (00:11)
+shutdown system down  4.12.14-197.29-d Sat Jul 11 19:30 - 19:32  (00:02)
 
 
 Top 5 Memory Resource Hog Processes
 --------------------------------------------------------------------------
-%MEM %CPU   PID  PPID USER     STAT COMMAND
+%MEM   PID  PPID USER     STAT COMMAND
 
- 3.2  0.0  3942  3641 root     Sl+  /usr/bin/gnome-software --gapplication-service
+ 8.3  1985  1781 salt     S    /usr/bin/python3 /usr/bin/salt-master
 
- 2.9  0.1  3419     1 root     Ssl  /usr/libexec/packagekitd
+ 6.1  1997  1986 salt     Sl   /usr/bin/python3 /usr/bin/salt-master
 
- 2.4  0.0  3964  3641 root     Sl+  /usr/libexec/evolution/evolution-alarm-notify
+ 6.1  1999  1986 salt     Sl   /usr/bin/python3 /usr/bin/salt-master
 
- 2.0  0.0  4226  4183 root     Sl   /usr/libexec/evolution-addressbook-factory-subprocess --factory all --bus-name org.gnome.evolution.dataserver.Subprocess.Backend.AddressBookx4183x2 --own-path /org/gnome/evolution/dataserver/Subprocess/Backend/AddressBook/4183/2
+ 6.1  1992  1986 salt     Sl   /usr/bin/python3 /usr/bin/salt-master
 
- 1.9  0.0  5026     1 root     S    /usr/libexec/platform-python /usr/libexec/rhsmd
-
+ 6.1  1988  1986 salt     Sl   /usr/bin/python3 /usr/bin/salt-master
 
 
 Top 5 CPU Resource Hog Processes
 --------------------------------------------------------------------------
-%CPU %MEM   PID  PPID USER     STAT COMMAND
+%CPU   PID  PPID USER     STAT COMMAND
 
- 4.5  0.1 24628  3757 root     S+   /bin/bash ./health-check.sh
+ 2.9  1985  1781 salt     S    /usr/bin/python3 /usr/bin/salt-master
 
- 0.5  1.2  3824     1 root     Ss   /usr/libexec/sssd/sssd_kcm --uid 0 --gid 0 --logger=files
+ 0.3 18920 18874 root     Ss   icewm --notify
 
- 0.4 15.9  3674  3641 root     Sl+  /usr/bin/gnome-shell
+ 0.3 20506  1859 root     Ss   sshd: root@pts/3
 
- 0.3 14.3  3364  3343 gdm      Sl+  /usr/bin/gnome-shell
+ 0.1  1988  1986 salt     Sl   /usr/bin/python3 /usr/bin/salt-master
 
- 0.1  2.9  3419     1 root     Ssl  /usr/libexec/packagekitd
+ 0.1  1992  1986 salt     Sl   /usr/bin/python3 /usr/bin/salt-master
 
 NOTE:- If any of the above fields are marked as "blank" or "NONE" or "UNKNOWN" or "Not Available" or "Not Specified"
 that means either there is no value present in the system for these fields, otherwise that value may not be available,
