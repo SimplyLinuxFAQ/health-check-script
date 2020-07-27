@@ -3,9 +3,9 @@
 ##---------- Blog site : https://www.simplylinuxfaq.com -------------------------------------##
 ##---------- Github page : https://github.com/SimplyLinuxFAQ/health-check-script ------------##
 ##---------- Purpose : To quickly check and report health status in a linux system.----------##
-##---------- Tested on : RHEL8(beta)/7/6/5/, SLES/SLED 12/11, Ubuntu14/16/18, Mint16, -------## 
+##---------- Tested on : RHEL8/7/6/, SLES/SLED 15/12/11, Ubuntu20/18/16, CentOS , -----------## 
 ##---------- Boss6(Debian) variants. It may work on other vari as well, but not tested. -----##
-##---------- Updated version : v2.0 (Updated on 30th Dec 2018) ------------------------------##
+##---------- Updated version : v3.0 (Updated on 27th Jul 2020) ------------------------------##
 ##-----NOTE: This script requires root privileges, otherwise one could run the script -------##
 ##---- as a sudo user who got root privileges. ----------------------------------------------##
 ##----------- "sudo /bin/bash <ScriptName>" -------------------------------------------------##
@@ -16,8 +16,8 @@ D="-------------------------------------"
 COLOR="y"
 
 MOUNT=$(mount|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|grep -v "loop"|sort -u -t' ' -k1,2)
-FS_USAGE=$(df -PTh|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|grep -v "loop"|sort -k6n|awk '!seen[$1]++')
-IUSAGE=$(df -PThi|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|grep -v "loop"|sort -k6n|awk '!seen[$1]++')
+FS_USAGE=$(df -PThl -x tmpfs -x iso9660 -x devtmpfs -x squashfs|awk '!seen[$1]++'|sort -k6n|tail -n +2)
+IUSAGE=$(df -iPThl -x tmpfs -x iso9660 -x devtmpfs -x squashfs|awk '!seen[$1]++'|sort -k6n|tail -n +2)
 
 if [ $COLOR == y ]; then
 {
@@ -38,29 +38,25 @@ echo -e "\tSystem Health Status"
 echo -e "$S"
 
 #--------Print Operating System Details--------#
-echo -e "\nPrint Operating System Details"
-echo -e "$D"
-
 hostname -f &> /dev/null && printf "Hostname : $(hostname -f)" || printf "Hostname : $(hostname -s)"
 
-[ -x /usr/bin/lsb_release ] &&  echo -e "\nOperating System :" $(lsb_release -d|awk -F: '{print $2}'|sed -e 's/^[ \t]*//')  || \
-echo -e "\nOperating System :" $(cat /etc/system-release)
+echo -en "\nOperating System : "
+[ -f /etc/os-release ] && echo $(egrep -w "NAME|VERSION" /etc/os-release|awk -F= '{ print $2 }'|sed 's/"//g') || cat /etc/system-release
 
-echo -e "Kernel Version : " $(uname -r)
-
-printf "OS Architecture : "$(arch | grep x86_64 &> /dev/null) && printf " 64 Bit OS\n"  || printf " 32 Bit OS\n"
+echo -e "Kernel Version :" $(uname -r)
+printf "OS Architecture :"$(arch | grep x86_64 &> /dev/null) && printf " 64 Bit OS\n"  || printf " 32 Bit OS\n"
 
 #--------Print system uptime-------#
 UPTIME=$(uptime)
+echo -en "System Uptime : "
 echo $UPTIME|grep day &> /dev/null
-if [ $? != 0 ]
-then
-  echo $UPTIME|grep -w min &> /dev/null && echo -e "System Uptime : "$(echo $UPTIME|awk '{print $2" by "$3}'|sed -e 's/,.*//g')" minutes" \
- || echo -e "System Uptime : "$(echo $UPTIME|awk '{print $2" by "$3" "$4}'|sed -e 's/,.*//g')" hours"
+if [ $? != 0 ]; then
+  echo $UPTIME|grep -w min &> /dev/null && echo -en "$(echo $UPTIME|awk '{print $2" by "$3}'|sed -e 's/,.*//g') minutes" \
+ || echo -en "$(echo $UPTIME|awk '{print $2" by "$3" "$4}'|sed -e 's/,.*//g') hours"
 else
-  echo -e "System Uptime : " $(echo $UPTIME|awk '{print $2" by "$3" "$4" "$5" hours"}'|sed -e 's/,//g')
+  echo -en $(echo $UPTIME|awk '{print $2" by "$3" "$4" "$5" hours"}'|sed -e 's/,//g')
 fi
-echo -e "Current System Date & Time : "$(date +%c)
+echo -e "\nCurrent System Date & Time : "$(date +%c)
 
 #--------Check for any read-only file systems--------#
 echo -e "\nChecking For Read-only File System[s]"
@@ -75,7 +71,7 @@ echo "$MOUNT"|column -t
 #--------Check disk usage on all mounted file systems--------#
 echo -e "\n\nChecking For Disk Usage On Mounted File System[s]"
 echo -e "$D$D"
-echo -e "( 0-90% = OK/HEALTHY, 90-95% = WARNING, 95-100% = CRITICAL )"
+echo -e "( 0-85% = OK/HEALTHY,  85-95% = WARNING,  95-100% = CRITICAL )"
 echo -e "$D$D"
 echo -e "Mounted File System[s] Utilization (Percentage Used):\n"
 
@@ -86,7 +82,7 @@ for i in $(echo "$COL2"); do
 {
   if [ $i -ge 95 ]; then
     COL3="$(echo -e $i"% $CCOLOR\n$COL3")"
-  elif [[ $i -ge 90 && $i -lt 95 ]]; then
+  elif [[ $i -ge 85 && $i -lt 95 ]]; then
     COL3="$(echo -e $i"% $WCOLOR\n$COL3")"
   else
     COL3="$(echo -e $i"% $GCOLOR\n$COL3")"
@@ -111,10 +107,11 @@ if [ $? == 0 ]; then
 else
  echo -e "No zombie processes found on the system."
 fi
+
 #--------Check Inode usage--------#
 echo -e "\n\nChecking For INode Usage"
 echo -e "$D$D"
-echo -e "( 0-90% = OK/HEALTHY, 90-95% = WARNING, 95-100% = CRITICAL )"
+echo -e "( 0-85% = OK/HEALTHY,  85-95% = WARNING,  95-100% = CRITICAL )"
 echo -e "$D$D"
 echo -e "INode Utilization (Percentage Used):\n"
 
@@ -127,7 +124,7 @@ for i in $(echo "$COL22"); do
   {
   if [ $i -ge 95 ]; then
     COL33="$(echo -e $i"% $CCOLOR\n$COL33")"
-  elif [[ $i -ge 90 && $i -lt 95 ]]; then
+  elif [[ $i -ge 85 && $i -lt 95 ]]; then
     COL33="$(echo -e $i"% $WCOLOR\n$COL33")"
   else
     COL33="$(echo -e $i"% $GCOLOR\n$COL33")"
@@ -173,15 +170,15 @@ echo -e "$D$D"
 last -x 2> /dev/null|grep shutdown 1> /dev/null && /usr/bin/last -x 2> /dev/null|grep shutdown|head -3 || \
 echo -e "No shutdown events are recorded."
 
-#--------Print top 5 most memory consuming resources---------#
+#--------Print top 5 Memory & CPU consumed process threads---------#
+#--------excludes current running program which is hwlist----------#
 echo -e "\n\nTop 5 Memory Resource Hog Processes"
 echo -e "$D$D"
-ps -eo pmem,pcpu,pid,ppid,user,stat,args | sort -k 1 -r | head -6|sed 's/$/\n/'
+ps -eo pmem,pid,ppid,user,stat,args --sort=-pmem|grep -v $$|head -6|sed 's/$/\n/'
 
-#--------Print top 5 most CPU consuming resources---------#
-echo -e "\n\nTop 5 CPU Resource Hog Processes"
+echo -e "\nTop 5 CPU Resource Hog Processes"
 echo -e "$D$D"
-ps -eo pcpu,pmem,pid,ppid,user,stat,args | sort -k 1 -r | head -6|sed 's/$/\n/'
+ps -eo pcpu,pid,ppid,user,stat,args --sort=-pcpu|grep -v $$|head -6|sed 's/$/\n/'
 
 echo -e "NOTE:- If any of the above fields are marked as \"blank\" or \"NONE\" or \"UNKNOWN\" or \"Not Available\" or \"Not Specified\"
 that means either there is no value present in the system for these fields, otherwise that value may not be available,
