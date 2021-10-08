@@ -42,9 +42,9 @@ while getopts "hcfe" option; do
     case $option in
         h) echo_usage;
         exit 0;;
-        c) COLOR="n" ;;
-        f) OUTPUT_TO_FILE=true
-        e) SEND_EMAIL=true
+        c) COLOR="n";;
+        f) OUTPUT_TO_FILE=true;;
+        e) SEND_EMAIL=true;;
         ?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
