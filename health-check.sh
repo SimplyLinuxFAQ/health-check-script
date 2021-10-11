@@ -13,6 +13,10 @@
 ##---------- Author : Vladimir Bazović ----------------------------##
 ##  Added privilegies check.
 ##  Color switch
+##  Output to file
+##  Email
+##  Setup procedure
+##  Plugins folder (core, enabled) @todo
 
 # bool function to test if the user is root or not (POSIX only)
 is_user_root () { [ "$(id -u)" -eq 0 ]; }
@@ -23,28 +27,33 @@ if ! is_user_root; then
 fi
 
 echo_usage() {
-    echo "usage: $0 [-h] [-c]";
+    echo "usage: $0 [-h] [-c] [-f] [-e] [-s] [-p PLUGIN_NAME]";
     echo "    h) this help";
     echo "    f) output to file";
-    echo "    e) send email (only if output to file is set also)"
+    echo "    e) send email (output to file is set also)"
     echo "    c) no color in output";
+    echo "    s) setup system"
+    echo "    p) copy core plugin "
+
 }
 
-#------variables used------#
+#------variables and parameters handling------#
 S="************************************"
 D="-------------------------------------"
 COLOR="y"
 OUTPUT_TO_FILE=false
 SEND_EMAIL=false
+SETUP_MODE=false
 
 # process parameters
-while getopts "hcfe" option; do
+while getopts "hcfesp:" option; do
     case $option in
-        h) echo_usage;
-        exit 0;;
+        h) echo_usage; exit 0;;
         c) COLOR="n";;
         f) OUTPUT_TO_FILE=true;;
-        e) SEND_EMAIL=true;;
+        e) OUTPUT_TO_FILE=true; SEND_EMAIL=true;;
+        s) SETUP_MODE=true;;
+        p) cp core-plugins/${OPTARG} run-plugins/${OPTARG};;
         ?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
@@ -66,6 +75,24 @@ else
         CCOLOR=" ------ CRITICAL "
     }
 fi
+
+confirm() {
+  local response  
+  while true; do
+    read -r -p "$1 [y/n] " response
+    case "$response" in 
+        [Yy][Ee][Ss]|[Yy]) echo "Answered yes, continuing..."; break;;
+        [Nn][Oo]|[Nn]) echo "Answered no, exiting..."; exit 0;;
+      *) echo "Please answer with yes or no";;
+    esac
+  done
+} 
+
+run_plugins() {    
+    for f in "run-plugiins/*.sh"; do
+        bash "$f" 
+    done
+}
 
 health_check() {
     echo -e "$S"
@@ -223,16 +250,43 @@ note() {
     echo -e "\n\t\t %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     echo -e "\t\t   <>--------<> Powered By : https://www.simplylinuxfaq.com <>--------<>"
     echo -e "\t\t %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+    echo -e "\n\t\t %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+    echo -e "\t\t   <>--------<>   Supercharged By : https://obscuris.xyz    <>--------<>"
+    echo -e "\t\t %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"    
 }
 
+if $SETUP_MODE ; then
+    if ! [ -f "health-check.config" ]; then
+        cp health-check.config.template health-check.config
+    else
+        confirm "Are you sure you want to change settings?"
+    fi
+    nano health-check.config
+    confirm "Do you want to add daily task? It will be added as last task one daily at midnight!"
+    CRONTAB_LINE="0 0 * * * .$PWD/health-check -e"
+    (crontab -l ; echo "$CRONTAB_LINE")| crontab -
+    crontab -e
+    exit 0    
+fi
+
 if $OUTPUT_TO_FILE ; then
-  REPORTDATE="$(date +%d-%m-%y-%H%M)"
-  health_check 1> /var/log/health-report/health-check-report-$REPORTDATE.txt 2> /dev/null
+  REPORT_DATE="$(date +%d-%m-%y-%H%M)"
+  REPORT_FILE="/var/log/health-report/health-check-report-$REPORT_DATE.txt"  
+  health_check 1> $REPORT_FILE 2> /dev/null
+  run_plugins 1>> $REPORT_FILE 2> /dev/null
+  REPORT_CONTENT="$(cat $REPORT_FILE)"
   if $SEND_EMAIL ; then
-    mailx -a /var/log/health-report/health-check-report-$REPORTDATE.txt -s \
-    'System Health Check Report Attached' root@localhost
+    source health-check.config
+    echo $SMTP_SERVER
+    curl --url "$SMTP_SERVER" \
+         --ssl-reqd \
+         --mail-from "$MAIL_FROM" \
+         --mail-rcpt "$MAIL_TO"  \
+         --user "$MAIL_USER:$MAIL_UPASSWD" \
+         -T <(echo -e "From: $MAIL_FROM\nTo: $MAIL_TO\nSubject: $MAIL_SUBJECT\n\n$REPORT_CONTENT")
   fi
 else
   health_check
+  run_plugins
   note
 fi
