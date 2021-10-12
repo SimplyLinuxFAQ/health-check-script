@@ -33,7 +33,9 @@ echo_usage() {
     echo "    e) send email (output to file is set also)"
     echo "    c) no color in output";
     echo "    s) setup system"
-    echo "    p) copy core plugin "
+    echo "    p) install core plugin "
+    echo "    u) uninstall prugin "
+
 
 }
 
@@ -44,16 +46,18 @@ COLOR="y"
 OUTPUT_TO_FILE=false
 SEND_EMAIL=false
 SETUP_MODE=false
+DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 
 # process parameters
-while getopts "hcfesp:" option; do
+while getopts "hcfesp:u:" option; do
     case $option in
         h) echo_usage; exit 0;;
         c) COLOR="n";;
         f) OUTPUT_TO_FILE=true;;
         e) OUTPUT_TO_FILE=true; SEND_EMAIL=true;;
         s) SETUP_MODE=true;;
-        p) cp core-plugins/${OPTARG} run-plugins/${OPTARG};;
+        p) ln -s $DIR/core-plugins/${OPTARG}.sh $DIR/run-plugins/${OPTARG}.sh; exit 0;;
+        u) rm $DIR/run-plugins/${OPTARG}.sh; exit 0;;
         ?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
@@ -89,7 +93,7 @@ confirm() {
 } 
 
 run_plugins() {    
-    for f in "run-plugiins/*.sh"; do
+    for f in $DIR/run-plugins/*.sh; do
         bash "$f" 
     done
 }
@@ -256,14 +260,14 @@ note() {
 }
 
 if $SETUP_MODE ; then
-    if ! [ -f "health-check.config" ]; then
-        cp health-check.config.template health-check.config
+    if ! [ -f "$DIR/health-check.config" ]; then
+        cp $DIR/health-check.config.template $DIR/health-check.config
     else
         confirm "Are you sure you want to change settings?"
     fi
-    nano health-check.config
+    nano $DIR/health-check.config
     confirm "Do you want to add daily task? It will be added as last task one daily at midnight!"
-    CRONTAB_LINE="0 0 * * * .$PWD/health-check -e"
+    CRONTAB_LINE="0 0 * * * $DIR/health-check.sh -e"
     (crontab -l ; echo "$CRONTAB_LINE")| crontab -
     crontab -e
     exit 0    
@@ -276,7 +280,7 @@ if $OUTPUT_TO_FILE ; then
   run_plugins 1>> $REPORT_FILE 2> /dev/null
   REPORT_CONTENT="$(cat $REPORT_FILE)"
   if $SEND_EMAIL ; then
-    source health-check.config
+    source $DIR/health-check.config
     echo $SMTP_SERVER
     curl --url "$SMTP_SERVER" \
          --ssl-reqd \
