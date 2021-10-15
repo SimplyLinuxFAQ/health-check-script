@@ -37,8 +37,6 @@ echo_usage() {
     echo "    p) install core plugin "
     echo "    u) uninstall prugin "
     echo "    l) list plugins"
-
-
 }
 
 #------variables and parameters handling------#
@@ -97,11 +95,12 @@ confirm() {
   while true; do
     read -r -p "$1 [y/n] " response
     case "$response" in 
-        [Yy][Ee][Ss]|[Yy]) echo "Answered yes, continuing..."; break;;
-        [Nn][Oo]|[Nn]) echo "Answered no, exiting..."; exit 0;;
+        [Yy][Ee][Ss]|[Yy]) echo "Answered yes..."; break;;
+        [Nn][Oo]|[Nn]) echo "Answered no..."; return 0;;
       *) echo "Please answer with yes or no";;
     esac
   done
+  return 1
 } 
 
 run_plugins() {    
@@ -271,18 +270,41 @@ note() {
     echo -e "\t\t %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"    
 }
 
+log_rotate() {
+ local content="/var/log/health-report/health-check-report-* {
+           weekly
+           rotate 10
+           missingok
+           compress
+           maxage 90
+       }"
+    echo -e "$content"
+}
+
 if $SETUP_MODE ; then
+    response=1
     mkdir -p /var/log/health-report/
     if ! [ -f "$DIR/health-check.config" ]; then
         cp $DIR/health-check.config.template $DIR/health-check.config
     else
         confirm "Are you sure you want to change settings?"
+        response=$?        
     fi
-    nano $DIR/health-check.config
+    if [ "$response" == "1" ]; then
+      nano $DIR/health-check.config
+    fi    
     confirm "Do you want to add daily task? It will be added as last task one daily at midnight!"
-    CRONTAB_LINE="0 0 * * * $DIR/health-check.sh -e"
-    (crontab -l ; echo "$CRONTAB_LINE")| crontab -
-    crontab -e
+    response=$?
+    if [ "$response" == "1" ]; then
+        CRONTAB_LINE="0 0 * * * $DIR/health-check.sh -e"
+        (crontab -l ; echo "$CRONTAB_LINE")| crontab -
+        crontab -e
+    fi
+    confirm "Do you want to add log rotate?"
+    response=$?
+    if [ "$response" == "1" ]; then
+        log_rotate > /etc/logrotate.d/health-check
+    fi
     exit 0    
 fi
 
