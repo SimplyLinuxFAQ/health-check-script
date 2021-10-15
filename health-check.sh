@@ -27,14 +27,16 @@ if ! is_user_root; then
 fi
 
 echo_usage() {
-    echo "usage: $0 [-h] [-c] [-f] [-e] [-s] [-p PLUGIN_NAME]";
-    echo "    h) this help";
-    echo "    f) output to file";
+    echo "usage: $0 [-h] [-v] [-c] [-f] [-e] [-s] [-p PLUGIN_NAME] [-l]";
+    echo "    h) this help"
+    echo "    v) verbose"
+    echo "    f) output to file"
     echo "    e) send email (output to file is set also)"
-    echo "    c) no color in output";
+    echo "    c) no color in output"
     echo "    s) setup system"
     echo "    p) install core plugin "
     echo "    u) uninstall prugin "
+    echo "    l) list plugins"
 
 
 }
@@ -48,16 +50,26 @@ SEND_EMAIL=false
 SETUP_MODE=false
 DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 
+usage_plugins() {    
+    export HC_USAGE=true
+    for f in $DIR/run-plugins/*.sh; do
+        bash "$f" 
+    done
+}
+
+
 # process parameters
-while getopts "hcfesp:u:" option; do
+while getopts "hvcfesp:u:l" option; do
     case $option in
-        h) echo_usage; exit 0;;
+        h) echo_usage; usage_plugins; exit 0;;
+        v) export HC_VERBOSE=true;;
         c) COLOR="n";;
         f) OUTPUT_TO_FILE=true;;
         e) OUTPUT_TO_FILE=true; SEND_EMAIL=true;;
         s) SETUP_MODE=true;;
         p) ln -s $DIR/core-plugins/${OPTARG}.sh $DIR/run-plugins/${OPTARG}.sh; exit 0;;
         u) rm $DIR/run-plugins/${OPTARG}.sh; exit 0;;
+        l) ls $DIR/core-plugins/*.sh | xargs basename -s .sh; exit;;
         ?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
@@ -260,6 +272,7 @@ note() {
 }
 
 if $SETUP_MODE ; then
+    mkdir -p /var/log/health-report/
     if ! [ -f "$DIR/health-check.config" ]; then
         cp $DIR/health-check.config.template $DIR/health-check.config
     else
