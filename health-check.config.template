@@ -1,0 +1,6 @@
+export SMTP_SERVER=''
+export MAIL_FROM=''
+export MAIL_TO=''
+export MAIL_USER=''
+export MAIL_UPASSWD=''
+export MAIL_SUBJECT='Health-check'
