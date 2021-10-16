@@ -61,7 +61,7 @@ echo -e "\nCurrent System Date & Time : "$(date +%c)
 #--------Check for any read-only file systems--------#
 echo -e "\nChecking For Read-only File System[s]"
 echo -e "$D"
-echo "$MOUNT"|grep -w \(ro\) && echo -e "\n.....Read Only file system[s] found"|| echo -e ".....No read-only file system[s] found. "
+echo "$MOUNT"|grep -w ro && echo -e "\n.....Read Only file system[s] found"|| echo -e ".....No read-only file system[s] found. "
 
 #--------Check for currently mounted file systems--------#
 echo -e "\n\nChecking For Currently Mounted File System[s]"
