@@ -11,4 +11,4 @@ This is a small, light weight script which makes use of native Linux utilities t
 For more details check the below web link :-
 https://www.simplylinuxfaq.com/2015/05/How-To-Check-Health-Status-Of-Linux-System.html
 
-                                                                    Updated on : 27-Jul-2020
+                                                                    Updated on : 16-Oct-2021
