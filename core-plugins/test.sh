@@ -23,3 +23,8 @@ else
   echo "VERBOSE not set, set it with -v"
 fi
 
+if [ "$HC_VERBOSE" == "y" ]; then
+  echo "COLOR is set, default"
+else
+  echo "COLOR is not set, probably -e or -c passed"
+fi

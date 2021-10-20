@@ -75,6 +75,7 @@ done
 MOUNT=$(mount|egrep -iw "ext4|ext3|xfs|gfs|gfs2|btrfs"|grep -v "loop"|sort -u -t' ' -k1,2)
 FS_USAGE=$(df -PThl -x tmpfs -x iso9660 -x devtmpfs -x squashfs|awk '!seen[$1]++'|sort -k6n|tail -n +2)
 IUSAGE=$(df -iPThl -x tmpfs -x iso9660 -x devtmpfs -x squashfs|awk '!seen[$1]++'|sort -k6n|tail -n +2)
+export HC_COLOR=$COLOR
 
 if [ $COLOR == y ]; then
     {
@@ -296,7 +297,7 @@ if $SETUP_MODE ; then
     confirm "Do you want to add daily task? It will be added as last task one daily at midnight!"
     response=$?
     if [ "$response" == "1" ]; then
-        CRONTAB_LINE="0 0 * * * $DIR/health-check.sh -e"
+        CRONTAB_LINE="0 0 * * * $DIR/health-check.sh -e -c"
         (crontab -l ; echo "$CRONTAB_LINE")| crontab -
         crontab -e
     fi
