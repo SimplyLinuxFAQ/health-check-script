@@ -24,9 +24,9 @@ else
 fi
 
 if test "${HC_USR_SBIN_PATH+x}"; then
-  echo "HC_USR_SBIN_PATH is set to $HC_USR_SBIN_PATH, probably passed with -u"
+  echo "HC_USR_SBIN_PATH is set to $HC_USR_SBIN_PATH, probably passed with -b"
 else
-  echo "HC_USR_SBIN_PATH not set, set it with -u"
+  echo "HC_USR_SBIN_PATH not set, set it with -b"
 fi
 
 if [ "$HC_VERBOSE" == "y" ]; then
