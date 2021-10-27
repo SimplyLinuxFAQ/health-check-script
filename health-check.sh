@@ -27,9 +27,10 @@ if ! is_user_root; then
 fi
 
 echo_usage() {
-    echo "usage: $0 [-h] [-v] [-c] [-f] [-e] [-s] [-p PLUGIN_NAME] [-l]";
+    echo "usage: $0 [-h] [-v] [-c] [-f] [-e] [-s] [-p PLUGIN_NAME] [-l] [-b USR_SBIN_PATH]";
     echo "    h) this help"
     echo "    v) verbose"
+    echo "    b) set /usr/sbin path for plugins"
     echo "    f) output to file"
     echo "    e) send email (output to file is set also)"
     echo "    c) no color in output"
@@ -48,7 +49,7 @@ SEND_EMAIL=false
 SETUP_MODE=false
 DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 
-usage_plugins() {    
+usage_plugins() {        
     export HC_USAGE=true
     for f in $DIR/run-plugins/*.sh; do
         bash "$f" 
@@ -57,10 +58,11 @@ usage_plugins() {
 
 
 # process parameters
-while getopts "hvcfesp:u:l" option; do
+while getopts "hvcfesp:u:lb:" option; do
     case $option in
         h) echo_usage; usage_plugins; exit 0;;
         v) export HC_VERBOSE=true;;
+        b) export HC_USR_SBIN_PATH=${OPTARG};;
         c) COLOR="n";;
         f) OUTPUT_TO_FILE=true;;
         e) OUTPUT_TO_FILE=true; SEND_EMAIL=true;;
@@ -104,8 +106,9 @@ confirm() {
   return 1
 } 
 
-run_plugins() {    
+run_plugins() {      
     for f in $DIR/run-plugins/*.sh; do
+        echo -e "\nRunning $f..."
         bash "$f" 
     done
 }

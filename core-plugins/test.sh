@@ -23,6 +23,12 @@ else
   echo "VERBOSE not set, set it with -v"
 fi
 
+if test "${HC_USR_SBIN_PATH+x}"; then
+  echo "HC_USR_SBIN_PATH is set to $HC_USR_SBIN_PATH, probably passed with -u"
+else
+  echo "HC_USR_SBIN_PATH not set, set it with -u"
+fi
+
 if [ "$HC_VERBOSE" == "y" ]; then
   echo "COLOR is set, default"
 else

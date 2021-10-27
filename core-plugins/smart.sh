@@ -10,7 +10,12 @@ if test "${HC_USAGE+x}"; then
     exit
 fi
 
-command -v smartctl >/dev/null 2>&1 || { echo >&2 "Script requires smartctl but it's not installed. On debian-ish systems try: sudo apt-get install smartmontools . Aborting."; exit 1; }
+if ! test "${HC_USR_SBIN_PATH+x}"; then
+    HC_USR_SBIN_PATH="/usr/sbin"
+fi
+
+SMARTCTL="$HC_USR_SBIN_PATH/smartctl" 
+command -v $SMARTCTL >/dev/null 2>&1 || { echo "Script requires smartctl but it's not installed. On debian-ish systems try: sudo apt-get install smartmontools . Aborting."; exit 1; }
 
 SERIALS=()
 
@@ -28,7 +33,7 @@ function smart() {
         local error=0
 
         # Obtain the serial
-        local output=$(smartctl -v 1,raw48:54 -v 7,raw48:54 -v 195,raw48:54 -a $1)
+        local output=$($SMARTCTL -v 1,raw48:54 -v 7,raw48:54 -v 195,raw48:54 -a $1)
         local serial=`echo "$output" | egrep "Serial Number:|Serial number:" | grep -v "\[No" | awk '{print $3}'`
         if [[ "${SERIALS[@]}" =~ "${serial}" ]] &&  [ ${serial} ]; then
                 # allready done exit
