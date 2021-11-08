@@ -5,7 +5,7 @@
 ##---------- Purpose : To quickly check and report health status in a linux system.----------##
 ##---------- Tested on : RHEL8/7/6/, SLES/SLED 15/12/11, Ubuntu20/18/16, CentOS , -----------##
 ##---------- Boss6(Debian) variants. It may work on other vari as well, but not tested. -----##
-##---------- Updated version : v3.0 (Updated on 27th Jul 2020) ------------------------------##
+##---------- Updated version : v3.1 (Updated on 16th Oct 2021) ------------------------------##
 ##-----NOTE: This script requires root privileges, otherwise one could run the script -------##
 ##---- as a sudo user who got root privileges. ----------------------------------------------##
 ##----------- "sudo /bin/bash <ScriptName>" -------------------------------------------------##
@@ -130,7 +130,7 @@ health_check() {
     #--------Print system uptime-------#
     UPTIME=$(uptime)
     echo -en "System Uptime : "
-    echo $UPTIME|grep day &> /dev/null
+    echo $UPTIME|grep day &> /dev/null    
     if [ $? != 0 ]; then
         echo $UPTIME|grep -w min &> /dev/null && echo -en "$(echo $UPTIME|awk '{print $2" by "$3}'|sed -e 's/,.*//g') minutes" \
         || echo -en "$(echo $UPTIME|awk '{print $2" by "$3" "$4}'|sed -e 's/,.*//g') hours"
@@ -138,11 +138,11 @@ health_check() {
         echo -en $(echo $UPTIME|awk '{print $2" by "$3" "$4" "$5" hours"}'|sed -e 's/,//g')
     fi
     echo -e "\nCurrent System Date & Time : "$(date +%c)
-    
+
     #--------Check for any read-only file systems--------#
     echo -e "\nChecking For Read-only File System[s]"
     echo -e "$D"
-    echo "$MOUNT"|grep -w \(ro\) && echo -e "\n.....Read Only file system[s] found"|| echo -e ".....No read-only file system[s] found. "
+    echo "$MOUNT"|grep -w ro && echo -e "\n.....Read Only file system[s] found"|| echo -e ".....No read-only file system[s] found. "
     
     #--------Check for currently mounted file systems--------#
     echo -e "\n\nChecking For Currently Mounted File System[s]"
@@ -170,6 +170,7 @@ health_check() {
             fi
         }
     done
+
     COL3=$(echo "$COL3"|sort -k1n)
     paste  <(echo "$COL1") <(echo "$COL3") -d' '|column -t
     
