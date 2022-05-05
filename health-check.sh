@@ -90,7 +90,7 @@ for i in $(echo "$COL2"); do
 }
 done
 COL3=$(echo "$COL3"|sort -k1n)
-paste  <(echo "$COL1") <(echo "$COL3") -d' '|column -t
+`paste  <(echo "$COL1") <(echo "$COL3") -d' '|column -t`
 
 #--------Check for any zombie processes--------#
 echo -e "\n\nChecking For Zombie Processes"
@@ -137,7 +137,7 @@ for i in $(echo "$COL22"); do
 done
 
 COL33=$(echo "$COL33"|sort -k1n)
-paste  <(echo "$COL11") <(echo "$COL33") -d' '|column -t
+`paste  <(echo "$COL11") <(echo "$COL33") -d' '|column -t`
 
 #--------Check for SWAP Utilization--------#
 echo -e "\n\nChecking SWAP Details"
