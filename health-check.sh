@@ -5,7 +5,7 @@
 ##---------- Purpose : To quickly check and report health status in a linux system.----------##
 ##---------- Tested on : RHEL9/8/7/6/, SLES/SLED 15/12/11, Ubuntu20/18/16, Alma, ------------##
 ##---------- Rocky, Boss6(Debian) variants. It may work on others as well, but not tested. --##
-##---------- Updated version : v3.1 (Updated on 9th Oct 2024) -------------------------------##
+##---------- Updated version : Updated on 9th September 2024 --------------------------------##
 ##-----NOTE: This script requires root privileges, otherwise one could run the script -------##
 ##---- as a sudo user who got root privileges. ----------------------------------------------##
 ##----------- "sudo /bin/bash <ScriptName>" -------------------------------------------------##
