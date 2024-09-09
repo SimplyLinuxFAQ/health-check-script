@@ -3,9 +3,9 @@
 ##---------- Blog site : https://www.simplylinuxfaq.com -------------------------------------##
 ##---------- Github page : https://github.com/SimplyLinuxFAQ/health-check-script ------------##
 ##---------- Purpose : To quickly check and report health status in a linux system.----------##
-##---------- Tested on : RHEL8/7/6/, SLES/SLED 15/12/11, Ubuntu20/18/16, CentOS , -----------## 
-##---------- Boss6(Debian) variants. It may work on other vari as well, but not tested. -----##
-##---------- Updated version : v3.1 (Updated on 16th Oct 2021) ------------------------------##
+##---------- Tested on : RHEL9/8/7/6/, SLES/SLED 15/12/11, Ubuntu20/18/16, Alma, ------------##
+##---------- Rocky, Boss6(Debian) variants. It may work on others as well, but not tested. --##
+##---------- Updated version : v3.1 (Updated on 9th Oct 2024) -------------------------------##
 ##-----NOTE: This script requires root privileges, otherwise one could run the script -------##
 ##---- as a sudo user who got root privileges. ----------------------------------------------##
 ##----------- "sudo /bin/bash <ScriptName>" -------------------------------------------------##
@@ -46,16 +46,8 @@ echo -en "\nOperating System : "
 echo -e "Kernel Version :" $(uname -r)
 printf "OS Architecture :"$(arch | grep x86_64 &> /dev/null) && printf " 64 Bit OS\n"  || printf " 32 Bit OS\n"
 
-#--------Print system uptime-------#
-UPTIME=$(uptime)
-echo -en "System Uptime : "
-echo $UPTIME|grep day &> /dev/null
-if [ $? != 0 ]; then
-  echo $UPTIME|grep -w min &> /dev/null && echo -en "$(echo $UPTIME|awk '{print $2" by "$3}'|sed -e 's/,.*//g') minutes" \
- || echo -en "$(echo $UPTIME|awk '{print $2" by "$3" "$4}'|sed -e 's/,.*//g') hours"
-else
-  echo -en $(echo $UPTIME|awk '{print $2" by "$3" "$4" "$5" hours"}'|sed -e 's/,//g')
-fi
+#--------Print system uptime & Current date/time-------#
+echo -en "System Uptime : " $(uptime -p)
 echo -e "\nCurrent System Date & Time : "$(date +%c)
 
 #--------Check for any read-only file systems--------#
