@@ -4,7 +4,7 @@ Get Your System Health Status Tested/Checked Today... ????
 
 Here is a script to check the basic health status of a linux system.
 
-This script has been tested to run successfully on RHEL8/7/6, CentOS, SLES/SLED 15/12/11, Ubuntu 20/18/16 x86 and x86_64 bit architectures. It may work on other variants as well, however, not tested. These tests were run on virtual machines.
+This script has been tested to run successfully on RHEL9/8/7/6, CentOS, SLES/SLED 15/12/11, Ubuntu 20/18/16. Alma8/9, Rocky Linux8/9 x86 and x86_64 bit architectures. It may work on other variants as well, however, not tested. These tests were run on virtual machines.
 
 This is a small, light weight script which makes use of native Linux utilities to get the required details and doesn't need much space.
 
